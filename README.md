@@ -50,7 +50,8 @@ set $oauth_client_secret "todo";
 # Name of the GitHub organization whose members can access the app
 set $github_organization "specify";
 
-# Scopes to request from GitHub
+# Scopes to request from GitHub. Must at least give "read:org"
+# Example: "read:org,repo"
 set $github_scopes "read:org";
 ```
 
@@ -59,7 +60,7 @@ Then use that file in your `docker-compose.yml`. Example configuration:
 ```yaml
   nginx:
     # Rather than using nginx:alphine, use this image:
-    image: specifyconsortium/nginx-with-github-auth
+    build: https://github.com/specify/nginx-with-github-auth.git#main
     ports:
       - '80:80'
       - '443:443'
@@ -71,4 +72,38 @@ Then use that file in your `docker-compose.yml`. Example configuration:
       - './sp7-stats/:/var/www/:ro'
       - './sp7-stats/config/fullchain.pem:/etc/letsencrypt/live/sp7-stats/fullchain.pem:ro'
       - './sp7-stats/config/privkey.pem:/etc/letsencrypt/live/sp7-stats/privkey.pem:ro'
+```
+
+The image is based of `nginx:alpine` by default. If needed, you can customize this:
+
+```yaml
+build:
+  context: https://github.com/specify/nginx-with-github-auth.git#main
+  args:
+    NGINX_VERSION: alpine
+```
+
+Finally, create an `nginx.conf` file:
+
+```nginx
+# Include this at the top level
+include nginx-with-github-auth/http.conf;
+
+server {
+    listen 80;
+
+    # Configuration for authentication. You need to customize this file
+    include auth.conf;
+
+    # Include this for servers that use authentication
+    include nginx-with-github-auth/server.conf;
+
+    location / {
+        # Include this for locations that need authentication
+        include nginx-with-github-auth/location.conf;
+        
+        proxy_pass http://server;
+    }
+
+}
 ```

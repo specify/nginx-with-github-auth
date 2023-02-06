@@ -1,10 +1,8 @@
 version: '3.9'
 services:
   nginx:
-    build:
-      # FIXME: Use the published image here instead
-      context: ../
-      target: nginx-with-auth
+    # Rather than using nginx:alpine, use this image:
+    build: https://github.com/specify/nginx-with-github-auth.git#main
     ports:
       - '80:80'
     networks:
@@ -13,7 +11,7 @@ services:
       - server
     volumes:
       - './nginx.conf:/etc/nginx/conf.d/default.conf'
-      - './config.conf:/etc/nginx/config.conf'
+      - './auth.conf:/etc/nginx/auth.conf'
 
   server:
     build:

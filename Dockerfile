@@ -1,4 +1,5 @@
-FROM nginx:alpine AS nginx-with-github-auth
+ARG NGINX_VERSION=alpine
+FROM nginx:${NGINX_VERSION} AS nginx-with-github-auth
 
 # Enable NJS
 RUN apk add --no-cache nginx-module-njs

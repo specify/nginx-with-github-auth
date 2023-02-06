@@ -1,7 +1,11 @@
 /**
  * Verify the GitHub OAuth 2.0 token and make sure it belongs to a user that
  * is member of the organization
+ *
+ * Note: Nginx JavaScript does not support many of the ES6 features, so we
+ * are restricted to using ES5 syntax
  */
+
 function authenticate(r) {
   var code = getCode(r);
 
