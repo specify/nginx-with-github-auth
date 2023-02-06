@@ -1,0 +1,16 @@
+{
+  "name": "nginx-with-github-auth",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A wrapped around NGINX to integrate with GitHub Authentication and block access to users who are not part of a given GitHub organization.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/specify/nginx-with-github-auth.git"
+  },
+  "devDependencies": {
+    "@maxxxxxdlp/prettier-config": "^1.0.4",
+    "prettier": "^2.8.3"
+  },
+  "prettier": "@maxxxxxdlp/prettier-config"
+}
